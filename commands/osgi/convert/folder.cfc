@@ -1,6 +1,6 @@
 component {
 
-	property name="progressBarGeneric" inject="progressBarGeneric";
+	// property name="progressBarGeneric" inject="progressBarGeneric";
 
 	/**
 	 * Converts all the JAR files in the folder into their OSGi equivalent.
@@ -32,25 +32,50 @@ component {
 		var currentDirectory = getCWD();
 		jars = directoryList(path = userFolderPath, recurse = arguments.recurse, listInfo = "path");
 		var totalJarCount = arrayLen(jars);
-		variables.progressBarGeneric.update(percent = 0, currentCount = 0, totalCount = totalJarCount);
+		//variables.progressBarGeneric.update(percent = 0, currentCount = 0, totalCount = totalJarCount);
+		var conversionErrors = 0;
+		var conversionSuccesses = 0;
+		print.line()
+			.line(totalJarCount & " JARs to convert:")
+			.line()
+			.toConsole();
+		// job.start( totalJarCount & " JARs to convert:" );
 		for (var i = 1; i <= totalJarCount; i++) {
-			command("osgi convert file")
-				.params(
-					path = jars[i],
-					bundleName = arguments.bundleName,
-					bundleVersion = arguments.bundleVersion,
-					output = false
-				)
-				.run(returnOutput = true);
-			variables.progressBarGeneric.update(
-				percent = int(i / totalJarCount * 100),
-				currentCount = i,
-				totalCount = totalJarCount
-			);
+			job.start( jars[i] );
+			job.addLog( "Processing..." );
+			try {
+				command( "osgi convert file" )
+					.params(
+						path = jars[i],
+						bundleName = arguments.bundleName,
+						bundleVersion = arguments.bundleVersion,
+						output = false
+					)
+					.run( returnOutput = true );
+				// variables.progressBarGeneric.update(
+				// 	percent = int(i / totalJarCount * 100),
+				// 	currentCount = i,
+				// 	totalCount = totalJarCount
+				// );
+				conversionSuccesses++;
+				job.complete();
+			} catch ( any e ) {
+				conversionErrors++;
+				job.error( "Something went wrong" );
+			}
 		}
+		// job.complete();
 		// variables.progressBarGeneric.clear();
-		command("cd " & currentDirectory).run(returnOutput = true);
-		print.line(totalJarCount & " JARs converted.");
+		command( "cd " & currentDirectory ).run( returnOutput = true );
+		print.line()
+			.boldText("Results:")
+			.line()
+			.indentedBlueLine("Successes: " & conversionSuccesses)
+			.indentedRedLine("Failures:  " & conversionErrors);
+		// print.line( "----------------------" )
+		// 	.greenLine("Success: " & conversionSuccesses )
+		// 	.redLine("Failure: " & conversionErrors);
+		// print.greenLinetotalJarCount & " JARs converted." );
 	}
 
 }

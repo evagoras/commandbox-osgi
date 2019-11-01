@@ -28,21 +28,21 @@ component {
 		 * Run the jar command to create the new JAR.
 		 */
 		var userFilePath = resolvePath(arguments.path);
-		var currentDirectory = getCWD();
-		var originalFIleDirectory = getDirectoryFromPath(userFilePath);
+		// var currentDirectory = getCWD();
+		var originalFileDirectory = getDirectoryFromPath(userFilePath);
 		var originalFileWithExt = getFileFromPath( userFilePath );
 		var originalFileName = listDeleteAt(originalFileWithExt, listLen(originalFileWithExt, "."), ".");
-		command("cd " & originalFIleDirectory).run(returnOutput = true);
+		command("cd " & originalFileDirectory).run(returnOutput = true);
 		var osgiPackageName = originalFileName & "-osgi";
-		var osgiPackageFullPath = originalFIleDirectory & osgiPackageName;
-		var osgiJarFullPath = originalFIleDirectory & osgiPackageName & ".jar";
+		var osgiPackageFullPath = originalFileDirectory & osgiPackageName;
+		var osgiJarFullPath = originalFileDirectory & osgiPackageName & ".jar";
 		if (arguments.output == true) {
 			print.line( "From file: " & userFilePath );
 			print.line( "To file:   " & osgiJarFullPath );
 			print.line( "Processing..." ).toConsole();
 		}
 		fileCopy(source = userFilePath, destination = osgiJarFullPath);
-		var zipFileFullPath = originalFIleDirectory & osgiPackageName & ".zip";
+		var zipFileFullPath = originalFileDirectory & osgiPackageName & ".zip";
 		fileMove(source = osgiJarFullPath, destination = zipFileFullPath);
 		directoryCreate(osgiPackageFullPath);
 		cfzip(action = "unzip", destination = osgiPackageFullPath, file = zipFileFullPath);
@@ -66,10 +66,10 @@ Bundle-Name: #arguments.bundleName#" );
 		command("!jar")
 			.params("cvfm " & osgiPackageName & ".jar manifest.txt .")
 			.run(returnOutput = true);
-		command("cd " & originalFIleDirectory).run( returnOutput = true );
-		fileMove(osgiPackageFullPath & "\" & osgiPackageName & ".jar", originalFIleDirectory);
+		command("cd " & originalFileDirectory).run( returnOutput = true );
+		fileMove(osgiPackageFullPath & "\" & osgiPackageName & ".jar", originalFileDirectory);
 		directoryDelete(path=osgiPackageFullPath, recurse=true);
-		command("cd " & currentDirectory).run(returnOutput = true);
+		// command("cd " & currentDirectory).run(returnOutput = true);
 		if (arguments.output == true) {
 			print.line("Finished");
 		}
