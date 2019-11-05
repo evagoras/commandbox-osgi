@@ -5,6 +5,13 @@ A CommandBox command for creating OSGi compatible JARs.
 box install commandbox-osgi
 ```
 
+## Requirements
+The project needs the Java JDK installed on your computer and two Path variables defined in your Windows Environment. On my PC they are:
+```
+JAVA_HOME = C:\Program Files\Java\jdk1.8.0_231
+Path += %JAVA_HOME%\bin
+```
+
 ## Converting files
 The path to the file can be relative or absolute. The bundle name and version can be anything you like.
 ```
