@@ -4,7 +4,7 @@
     "changelog":"",
     "contributors":[],
     "dependencies":{},
-    "description":"An OSGi converter",
+    "description":"An OSGi bundle JAR file converter",
     "devDependencies":{},
     "documentation":"",
     "homepage":"",
@@ -25,13 +25,13 @@
     "location":"ForgeboxStorage",
     "name":"OSGi Creator",
     "private":false,
-    "projectURL":"",
+    "projectURL":"https://github.com/evagoras/commandbox-osgi",
     "repository":{
-        "type":"",
-        "URL":""
+        "type":"git",
+        "URL":"https://github.com/evagoras/commandbox-osgi"
     },
     "scripts":{},
-    "shortDescription":"A sweet package",
+    "shortDescription":"A library to create OSGi bundles out of a existing JARs to avoid Java path conflicts.",
     "slug":"commandbox-osgi",
     "testbox":{
         "bundles":"",
