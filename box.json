@@ -23,7 +23,7 @@
         }
     ],
     "location":"ForgeboxStorage",
-    "name":"OSGi Creator",
+    "name":"OSGi JAR Converter",
     "private":false,
     "projectURL":"https://github.com/evagoras/commandbox-osgi",
     "repository":{
