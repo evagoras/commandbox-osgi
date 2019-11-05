@@ -8,7 +8,7 @@ box install commandbox-osgi
 ## Converting files
 The path to the file can be relative or absolute. The bundle name and version can be anything you like.
 ```
-asgi convert file path=gson-2.8.5.jar bundleName=com.mycompany.myproject bundleVersion=1.0.0
+osgi convert file path=gson-2.8.5.jar bundleName=com.mycompany.myproject bundleVersion=1.0.0
 ```
 Based on the docs, you can then use your bundle in CFML:
 ```
@@ -18,5 +18,5 @@ createObject( "java", "com.google.gson.GsonBuilder", "com.mycompany.myproject", 
 ## Converting folders
 You can either use an absolute or relative location for the folder. The `resurse` attribute is for processing JARs in nested folders. Example:
 ```
-asgi convert folder path=C:\dev\sites\abc\lib bundleName=com.mycompany.myproject bundleVersion=1.0.0 recurse=true
+osgi convert folder path=C:\dev\sites\abc\lib bundleName=com.mycompany.myproject bundleVersion=1.0.0 recurse=true
 ```
