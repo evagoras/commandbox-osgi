@@ -27,34 +27,34 @@ component {
 		 * cd into the JAR contents folder.
 		 * Run the jar command to create the new JAR.
 		 */
-		var userFilePath = resolvePath(arguments.path);
-		// var currentDirectory = getCWD();
-		var originalFileDirectory = getDirectoryFromPath(userFilePath);
+		var userFilePath = resolvePath( arguments.path );
+		var currentDirectory = getCWD();
+		var originalFileDirectory = getDirectoryFromPath( userFilePath );
 		var originalFileWithExt = getFileFromPath( userFilePath );
-		var originalFileName = listDeleteAt(originalFileWithExt, listLen(originalFileWithExt, "."), ".");
-		command("cd " & originalFileDirectory).run(returnOutput = true);
+		var originalFileName = listDeleteAt( originalFileWithExt, listLen(originalFileWithExt, "."), "." );
+		command( "cd " & originalFileDirectory ).run( returnOutput = true );
 		var osgiPackageName = originalFileName & "-osgi";
 		var osgiPackageFullPath = originalFileDirectory & osgiPackageName;
 		var osgiJarFullPath = originalFileDirectory & osgiPackageName & ".jar";
-		if (arguments.output == true) {
+		if ( arguments.output == true ) {
 			print.line( "From file: " & userFilePath );
 			print.line( "To file:   " & osgiJarFullPath );
 			print.line( "Processing..." ).toConsole();
 		}
-		fileCopy(source = userFilePath, destination = osgiJarFullPath);
+		fileCopy( source = userFilePath, destination = osgiJarFullPath );
 		var zipFileFullPath = originalFileDirectory & osgiPackageName & ".zip";
-		fileMove(source = osgiJarFullPath, destination = zipFileFullPath);
-		directoryCreate(osgiPackageFullPath);
-		cfzip(action = "unzip", destination = osgiPackageFullPath, file = zipFileFullPath);
+		fileMove( source = osgiJarFullPath, destination = zipFileFullPath );
+		directoryCreate( osgiPackageFullPath );
+		cfzip( action = "unzip", destination = osgiPackageFullPath, file = zipFileFullPath );
 		fileDelete(zipFileFullPath);
-		command("cd " & osgiPackageFullPath).run(returnOutput = true);
+		command( "cd " & osgiPackageFullPath ).run( returnOutput = true );
 		var metaInfFolder = osgiPackageFullPath & "\META-INF";
-		if (directoryExists(metaInfFolder)) {
-			directoryDelete(path=metaInfFolder, recurse=true);
+		if (directoryExists( metaInfFolder )) {
+			directoryDelete( path=metaInfFolder, recurse=true );
 		}
 		var manifestFile = osgiPackageFullPath & "\manifest.txt";
-		if (fileExists(manifestFile)) {
-			fileDelete(manifestFile);
+		if ( fileExists( manifestFile ) ) {
+			fileDelete( manifestFile );
 		}
 		var manifestFileContent = "";
 		savecontent variable="manifestFileContent" {
@@ -62,16 +62,16 @@ component {
 Bundle-Version: #arguments.bundleVersion#
 Bundle-Name: #arguments.bundleName#" );
 		}
-		fileWrite(filePath=manifestFile, data=manifestFileContent);
-		command("!jar")
-			.params("cvfm " & osgiPackageName & ".jar manifest.txt .")
-			.run(returnOutput = true);
-		command("cd " & originalFileDirectory).run( returnOutput = true );
-		fileMove(osgiPackageFullPath & "\" & osgiPackageName & ".jar", originalFileDirectory);
-		directoryDelete(path=osgiPackageFullPath, recurse=true);
-		// command("cd " & currentDirectory).run(returnOutput = true);
-		if (arguments.output == true) {
-			print.line("Finished");
+		fileWrite( filePath=manifestFile, data=manifestFileContent );
+		command( "!jar" )
+			.params( "cvfm " & osgiPackageName & ".jar manifest.txt ." )
+			.run( returnOutput = true );
+		command( "cd " & originalFileDirectory).run( returnOutput = true );
+		fileMove( osgiPackageFullPath & "\" & osgiPackageName & ".jar", originalFileDirectory );
+		directoryDelete( path=osgiPackageFullPath, recurse=true );
+		command( "cd " & currentDirectory ).run( returnOutput = true );
+		if ( arguments.output == true ) {
+			print.line( "Finished" );
 		}
 	}
 

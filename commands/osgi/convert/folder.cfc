@@ -1,7 +1,5 @@
 component {
 
-	// property name="progressBarGeneric" inject="progressBarGeneric";
-
 	/**
 	 * Converts all the JAR files in the folder into their OSGi equivalent.
 	 * This is how you call it:
@@ -28,18 +26,16 @@ component {
 		 * Update the Progress Bar at the end of each JAR conversion.
 		 * 
 		 */
-		var userFolderPath = resolvePath(arguments.path);
+		var userFolderPath = resolvePath( arguments.path );
 		var currentDirectory = getCWD();
-		jars = directoryList(path = userFolderPath, recurse = arguments.recurse, listInfo = "path");
+		jars = directoryList( path = userFolderPath, filter = "*.jar", recurse = arguments.recurse, listInfo = "path" );
 		var totalJarCount = arrayLen(jars);
-		//variables.progressBarGeneric.update(percent = 0, currentCount = 0, totalCount = totalJarCount);
 		var conversionErrors = 0;
 		var conversionSuccesses = 0;
 		print.line()
 			.line(totalJarCount & " JARs to convert:")
 			.line()
 			.toConsole();
-		// job.start( totalJarCount & " JARs to convert:" );
 		for (var i = 1; i <= totalJarCount; i++) {
 			job.start( jars[i] );
 			job.addLog( "Processing..." );
@@ -52,30 +48,19 @@ component {
 						output = false
 					)
 					.run( returnOutput = true );
-				// variables.progressBarGeneric.update(
-				// 	percent = int(i / totalJarCount * 100),
-				// 	currentCount = i,
-				// 	totalCount = totalJarCount
-				// );
 				conversionSuccesses++;
 				job.complete();
 			} catch ( any e ) {
 				conversionErrors++;
-				job.error( "Something went wrong" );
+				job.error( "Error: " & e.message );
 			}
 		}
-		// job.complete();
-		// variables.progressBarGeneric.clear();
 		command( "cd " & currentDirectory ).run( returnOutput = true );
 		print.line()
-			.boldText("Results:")
+			.boldText( "Results:" )
 			.line()
-			.indentedBlueLine("Successes: " & conversionSuccesses)
-			.indentedRedLine("Failures:  " & conversionErrors);
-		// print.line( "----------------------" )
-		// 	.greenLine("Success: " & conversionSuccesses )
-		// 	.redLine("Failure: " & conversionErrors);
-		// print.greenLinetotalJarCount & " JARs converted." );
+			.indentedBlueLine( "Successes: " & conversionSuccesses )
+			.indentedRedLine( "Failures:  " & conversionErrors );
 	}
 
 }
