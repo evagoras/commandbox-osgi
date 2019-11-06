@@ -1,4 +1,5 @@
-A CommandBox command for creating OSGi compatible JARs.
+# commandbox-osgi
+This is a ForgeBox CommandBox module for converting JARs into named and versioned OSGi bundle compatible JARs.
 
 ## Install the command locally
 ```
@@ -17,7 +18,7 @@ The path to the file can be relative or absolute. The bundle name and version ca
 ```
 osgi convert file path=gson-2.8.5.jar bundleName=com.mycompany.myproject bundleVersion=1.0.0
 ```
-Based on the docs, you can then use your bundle in CFML:
+Based on the docs, you can then use your bundle in CFML. Currently this only works with Lucee, Adobe might add it for their 2020 release.
 ```
 createObject( "java", "com.google.gson.GsonBuilder", "com.mycompany.myproject", "1.0.0" );
 ```
