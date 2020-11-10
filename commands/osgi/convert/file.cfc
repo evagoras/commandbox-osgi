@@ -58,7 +58,8 @@ component {
 		}
 		var manifestFileContent = "";
 		savecontent variable="manifestFileContent" {
-			writeOutput( "Bundle-SymbolicName: #arguments.bundleName#
+			writeOutput( "Bundle-ManifestVersion: 2
+Bundle-SymbolicName: #arguments.bundleName#
 Bundle-Version: #arguments.bundleVersion#
 Bundle-Name: #arguments.bundleName#" );
 		}
@@ -66,6 +67,7 @@ Bundle-Name: #arguments.bundleName#" );
 		command( "!jar" )
 			.params( "cvfm " & osgiPackageName & ".jar manifest.txt ." )
 			.run( returnOutput = true );
+		fileDelete( manifestFile );
 		command( "cd " & originalFileDirectory).run( returnOutput = true );
 		fileMove( osgiPackageFullPath & "\" & osgiPackageName & ".jar", originalFileDirectory );
 		directoryDelete( path=osgiPackageFullPath, recurse=true );
