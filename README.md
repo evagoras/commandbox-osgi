@@ -1,9 +1,14 @@
 # commandbox-osgi
 This is a ForgeBox CommandBox module for converting JARs into named and versioned OSGi bundle compatible JARs.
 
-## Install the command locally
+## Install the command locally through CommandBox
 ```
-box install commandbox-osgi
+install commandbox-osgi
+```
+
+## Uninstall the command locally through CommandBox
+```
+uninstall commandbox-osgi
 ```
 
 ## Requirements

@@ -26,9 +26,9 @@ component {
 		 * Update the Progress Bar at the end of each JAR conversion.
 		 * 
 		 */
-		var userFolderPath = resolvePath( arguments.path );
+		var userFolderPath = resolvePath(arguments.path);
 		var currentDirectory = getCWD();
-		jars = directoryList( path = userFolderPath, filter = "*.jar", recurse = arguments.recurse, listInfo = "path" );
+		jars = directoryList(path = userFolderPath, filter = "*.jar", recurse = arguments.recurse, listInfo = "path");
 		var totalJarCount = arrayLen(jars);
 		var conversionErrors = 0;
 		var conversionSuccesses = 0;
@@ -37,30 +37,30 @@ component {
 			.line()
 			.toConsole();
 		for (var i = 1; i <= totalJarCount; i++) {
-			job.start( jars[i] );
-			job.addLog( "Processing..." );
+			job.start(jars[i]);
+			job.addLog("Processing...");
 			try {
-				command( "osgi convert file" )
+				command("osgi convert file")
 					.params(
 						path = jars[i],
 						bundleName = arguments.bundleName,
 						bundleVersion = arguments.bundleVersion,
 						output = false
 					)
-					.run( returnOutput = true );
+					.run(returnOutput = true);
 				conversionSuccesses++;
 				job.complete();
-			} catch ( any e ) {
+			} catch (any e) {
 				conversionErrors++;
-				job.error( "Error: " & e.message );
+				job.error("Error: " & e.message);
 			}
 		}
-		command( "cd " & currentDirectory ).run( returnOutput = true );
+		command("cd " & currentDirectory).run(returnOutput = true);
 		print.line()
-			.boldText( "Results:" )
+			.boldText("Results:")
 			.line()
-			.indentedBlueLine( "Successes: " & conversionSuccesses )
-			.indentedRedLine( "Failures:  " & conversionErrors );
+			.indentedBlueLine("Successes: " & conversionSuccesses)
+			.indentedRedLine("Failures:  " & conversionErrors);
 	}
 
 }
